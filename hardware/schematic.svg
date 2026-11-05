@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 620" font-family="sans-serif" font-size="13">
+  <title>ColorfulTalk pico LSI 回路図（ATmega328P）</title>
+  <rect width="980" height="620" fill="#fff"/>
+  <style>
+    .w { stroke: #222; stroke-width: 1.6; fill: none; }
+    .c { fill: #222; }
+    .chip { fill: #f4f6fb; stroke: #222; stroke-width: 2; }
+    .pin { font-size: 12px; fill: #333; }
+    .lab { font-size: 13px; fill: #0a4; font-weight: bold; }
+    .note { font-size: 12px; fill: #555; }
+    .part { font-size: 12px; fill: #222; }
+  </style>
+
+  <text x="20" y="30" font-size="18" font-weight="bold">ColorfulTalk pico LSI — ATmega328P（DIP-28）</text>
+  <text x="20" y="50" class="note">5V 単一電源 / 16MHz 水晶 / UART 9600bps・I2C 0x2E / PWM 62.5kHz → 2 次 RC ローパス → アンプ</text>
+
+  <!-- チップ -->
+  <rect x="380" y="90" width="200" height="440" class="chip"/>
+  <text x="430" y="115" font-weight="bold">ATmega328P</text>
+  <!-- 左側のピン -->
+  <g class="pin">
+    <text x="388" y="150">1 RESET</text>
+    <text x="388" y="185">2 PD0/RXD</text>
+    <text x="388" y="220">3 PD1/TXD</text>
+    <text x="388" y="255">4 PD2 (BUSY)</text>
+    <text x="388" y="290">5 PD3/OC2B</text>
+    <text x="388" y="325">7 VCC</text>
+    <text x="388" y="360">8 GND</text>
+    <text x="388" y="395">9 XTAL1</text>
+    <text x="388" y="430">10 XTAL2</text>
+  </g>
+  <!-- 右側のピン -->
+  <g class="pin" text-anchor="end">
+    <text x="572" y="150">20 AVCC</text>
+    <text x="572" y="185">21 AREF</text>
+    <text x="572" y="220">22 GND</text>
+    <text x="572" y="255">27 PC4/SDA</text>
+    <text x="572" y="290">28 PC5/SCL</text>
+    <text x="572" y="325">17 PB3/MOSI</text>
+    <text x="572" y="360">18 PB4/MISO</text>
+    <text x="572" y="395">19 PB5/SCK</text>
+  </g>
+
+  <!-- ピンの線（左） -->
+  <path class="w" d="M380 146 H330"/><path class="w" d="M380 181 H200"/><path class="w" d="M380 216 H200"/>
+  <path class="w" d="M380 251 H200"/><path class="w" d="M380 286 H330"/><path class="w" d="M380 321 H330"/>
+  <path class="w" d="M380 356 H330"/><path class="w" d="M380 391 H300"/><path class="w" d="M380 426 H300"/>
+  <!-- ピンの線（右） -->
+  <path class="w" d="M580 146 H640"/><path class="w" d="M580 181 H640"/><path class="w" d="M580 216 H640"/>
+  <path class="w" d="M580 251 H760"/><path class="w" d="M580 286 H760"/><path class="w" d="M580 321 H760"/>
+  <path class="w" d="M580 356 H760"/><path class="w" d="M580 391 H760"/>
+
+  <!-- RESET 10k プルアップ -->
+  <path class="w" d="M330 146 V110 H300"/><rect x="250" y="102" width="50" height="16" class="w"/>
+  <text x="250" y="98" class="part">R1 10kΩ → 5V</text>
+
+  <!-- ホスト接続 -->
+  <text x="40" y="186" class="lab">ホスト TX →</text>
+  <text x="40" y="221" class="lab">ホスト RX ←</text>
+  <text x="40" y="256" class="lab">BUSY →（任意: LED 1kΩ）</text>
+
+  <!-- 電源 -->
+  <text x="250" y="325" class="lab">5V</text><text x="250" y="360" class="lab">GND</text>
+  <path class="w" d="M330 321 V340"/><rect x="322" y="332" width="16" height="4" class="c"/>
+  <text x="200" y="345" class="part">C3 100nF（VCC–GND）</text>
+
+  <!-- 水晶 -->
+  <path class="w" d="M300 391 V400"/><path class="w" d="M300 426 V417"/>
+  <rect x="290" y="400" width="20" height="17" class="w"/><text x="200" y="412" class="part">X1 16MHz</text>
+  <path class="w" d="M300 391 H270 V470"/><path class="w" d="M300 426 H285 V470"/>
+  <text x="180" y="490" class="part">C1, C2 22pF → GND</text>
+
+  <!-- AVCC / AREF / GND -->
+  <text x="650" y="150" class="lab">5V</text><text x="650" y="168" class="part">C4 100nF → GND</text>
+  <text x="650" y="185" class="part">C5 100nF → GND（任意）</text>
+  <text x="650" y="220" class="lab">GND</text>
+
+  <!-- I2C -->
+  <text x="770" y="256" class="lab">SDA ↔ ホスト</text>
+  <text x="770" y="291" class="lab">SCL ← ホスト</text>
+  <text x="770" y="306" class="note">プルアップ 4.7kΩ ×2 はホスト側に 1 組</text>
+
+  <!-- ISP -->
+  <text x="770" y="341" class="lab">ISP ヘッダ（2×3）</text>
+  <text x="770" y="358" class="note">MOSI / MISO / SCK / RESET / 5V / GND</text>
+
+  <!-- 音声出力: PD3 → RC → RC → C → アンプ -->
+  <path class="w" d="M330 286 V560 H380"/>
+  <rect x="380" y="552" width="50" height="16" class="w"/><text x="380" y="545" class="part">R2 2.2kΩ</text>
+  <path class="w" d="M430 560 H480"/>
+  <path class="w" d="M480 560 V575"/><rect x="470" y="575" width="20" height="4" class="c"/><rect x="470" y="583" width="20" height="4" class="c"/>
+  <text x="495" y="590" class="part">C6 22nF → GND</text>
+  <path class="w" d="M480 560 H520"/>
+  <rect x="520" y="552" width="50" height="16" class="w"/><text x="520" y="545" class="part">R3 2.2kΩ</text>
+  <path class="w" d="M570 560 H620"/>
+  <path class="w" d="M620 560 V575"/><rect x="610" y="575" width="20" height="4" class="c"/><rect x="610" y="583" width="20" height="4" class="c"/>
+  <text x="635" y="590" class="part">C7 22nF → GND</text>
+  <path class="w" d="M620 560 H680"/>
+  <rect x="680" y="550" width="4" height="20" class="c"/><rect x="690" y="550" width="4" height="20" class="c"/>
+  <text x="670" y="545" class="part">C8 1µF</text>
+  <path class="w" d="M694 560 H760"/>
+  <rect x="760" y="540" width="120" height="40" class="w"/><text x="772" y="565" class="part">アンプ（例: PAM8302）</text>
+  <path class="w" d="M880 560 H920"/><text x="900" y="545" class="lab">SP 8Ω</text>
+  <text x="380" y="610" class="note">PWM 62.5kHz を 2 段の RC（各 約 3.3kHz）で音声に戻す。ライン出力ならアンプなしで C8 の後から取り出す</text>
+</svg>

@@ -1,0 +1,7 @@
+build/
+firmware/*.elf
+firmware/*.hex
+firmware/*.o
+firmware/*.map
+tests/*.out.json
+node_modules/
